@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'check_from_file'
+require 'check_from_file/cli'
+
+CheckFromFile::Check.run! CheckFromFile::CLI.parse(ARGV)
