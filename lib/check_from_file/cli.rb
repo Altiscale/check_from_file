@@ -6,6 +6,8 @@ module CheckFromFile
   class CLI
     def self.parse(args)
       options = OpenStruct.new
+      options[:file_age_warning] = 150
+      options[:file_age_critical] = 300
 
       opt_parser = OptionParser.new do |opts|
         opts.banner = "Usage: #{$0} -c <command> -o <stdout> -e <stderr> -r <ret>"
@@ -24,6 +26,14 @@ module CheckFromFile
 
         opts.on('-r', '--return FILE', 'File that contains return code') do |ret|
           options[:return] = ret
+        end
+
+        opts.on('-W', '--file-age-warn SECONDS', 'WARN when file is older than SECONDS. Default: 150') do |ret|
+          options[:file_age_warning] = ret.to_i
+        end
+
+        opts.on('-C', '--file-age-crit SECONDS', 'CRIT when file is older than SECONDS. Default: 300') do |ret|
+          options[:file_age_critical] = ret.to_i
         end
 
         opts.on_tail("-h", "--help", "Show this message") do
