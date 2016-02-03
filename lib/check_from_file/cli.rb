@@ -8,11 +8,10 @@ module CheckFromFile
       options = OpenStruct.new
       options[:file_age_warning] = 150
       options[:file_age_critical] = 300
-      options[:lock] = nil
       options[:lock_timeout] = 30
 
       opt_parser = OptionParser.new do |opts|
-        opts.banner = "Usage: #{$0} -c <command> -o <stdout> -e <stderr> -r <ret>"
+        opts.banner = "Usage: #{$0} -c <command> -o <stdout> -e <stderr> -r <ret> [-l <lock-file>]"
 
         opts.on('-c', '--command COMMAND', :REQUIRED, 'Command that was run to generate this output') do |command|
           options[:command] = command
@@ -38,7 +37,7 @@ module CheckFromFile
           options[:file_age_critical] = ret.to_i
         end
 
-        opts.on('-l', '--lock-file', 'If passed, use file for exclusive lock before trying to read files') do |lock|
+        opts.on('-l', '--lock-file FILE', 'If passed, use file for exclusive lock before trying to read files') do |lock|
           options[:lock] = lock
         end
 
