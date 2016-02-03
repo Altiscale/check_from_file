@@ -8,6 +8,8 @@ module CheckFromFile
       options = OpenStruct.new
       options[:file_age_warning] = 150
       options[:file_age_critical] = 300
+      options[:lock] = nil
+      options[:lock_timeout] = 30
 
       opt_parser = OptionParser.new do |opts|
         opts.banner = "Usage: #{$0} -c <command> -o <stdout> -e <stderr> -r <ret>"
@@ -34,6 +36,14 @@ module CheckFromFile
 
         opts.on('-C', '--file-age-crit SECONDS', 'CRIT when file is older than SECONDS. Default: 300') do |ret|
           options[:file_age_critical] = ret.to_i
+        end
+
+        opts.on('-l', '--lock-file', 'If passed, use file for exclusive lock before trying to read files') do |lock|
+          options[:lock] = lock
+        end
+
+        opts.on('-t', '--lock-timeout', 'Number of seconds to wait for lock acquisition') do |timeout|
+          options[:timeout] = timeout
         end
 
         opts.on_tail("-h", "--help", "Show this message") do
